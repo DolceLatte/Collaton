@@ -1,21 +1,16 @@
 import json
-
 import urllib.request
 from urllib import parse
-
 import GoogleTrend
 import Search_Relative_Channel
 import requests
 from bs4 import BeautifulSoup
 
-
 # contents의 구글 트렌트 데이터를 수집
 def Recommand_Content(content):
     return GoogleTrend.GoogleTrendConstruct(content)
 
-
 def relContents(channel,user):
-
     if channel == 'user':
         Channel = Search_Relative_Channel.getCategory(user)
     else:
@@ -23,7 +18,6 @@ def relContents(channel,user):
     relativeChannel = json.loads(Channel)
     # 연관 contents 데이터를 수집
     content = relativeChannel["items"][0]["topicDetails"]["topicCategories"]
-
     # 관련컨텐츠 배열
     _content = []
     i = 0
@@ -54,13 +48,11 @@ def relContents(channel,user):
             i = i + 1
         if i > 1:
             break
-
     # contents의 구글 트렌트 데이터를 수집
     # 예외처리 과정
     return _content
 
 def relContents_with_ortherChannel(channel,user):
-
     if channel == 'user':
         Channel = Search_Relative_Channel.getCategory(user)
     else:
@@ -68,7 +60,6 @@ def relContents_with_ortherChannel(channel,user):
     relativeChannel = json.loads(Channel)
     # 연관 contents 데이터를 수집
     content = relativeChannel["items"][0]["topicDetails"]["topicCategories"]
-
     # 관련컨텐츠 배열
     _content = []
     i = 0
@@ -84,6 +75,12 @@ def relContents_with_ortherChannel(channel,user):
             _content.append('오락')
             i = i + 1
         elif str(a).split('/')[4] == 'Video_game_culture':
+            _content.append('비디오 게임')
+            i = i + 1
+        elif str(a).split('/')[4] == 'Technology':
+            _content.append('기술')
+            i = i + 1
+        elif str(a).split('/')[4] == 'Role-playing_video_game':
             _content.append('게임')
             i = i + 1
         elif str(a).split('/')[4] == 'Pet':
@@ -108,8 +105,7 @@ def search(title):
     client_id = "TLJL6dICXVWTh4Q67_8N"
     client_secret = "BwPjecjHEp"
     url = "https://openapi.naver.com/v1/datalab/search";
-    body = "{\"startDate\":\"2019-01-01\",\"endDate\":\"2019-10-30\",\"timeUnit\":\"month\",\"keywordGroups\":[{\"groupName\":\"유튜브\",\"keywords\":[\"" + title + "\"]}],\"device\":\"pc\",\"gender\":\"f\"}";
-
+    body = "{\"startDate\":\"2019-01-01\",\"endDate\":\"2019-10-30\",\"timeUnit\":\"month\",\"keywordGroups\":[{\"groupName\":\"유튜브\",\"keywords\":[\"" + title + "\"]}],\"device\":\"pc\",\"gender\":\"f\"}"
     request = urllib.request.Request(url)
     request.add_header("X-Naver-Client-Id", client_id)
     request.add_header("X-Naver-Client-Secret", client_secret)
@@ -122,7 +118,6 @@ def search(title):
     else:
         print("Error Code:" + rescode)
 
-
 def matchingUser(title):
     ## HTTP GET Request
     url = urllib.parse.quote(title)
@@ -134,16 +129,11 @@ def matchingUser(title):
     ## 이 글에서는 Python 내장 html.parser를 이용했다.
     soup = BeautifulSoup(html, 'html.parser')
     id = soup.find('a', attrs={'class': 'yt-uix-tile-link yt-ui-ellipsis yt-ui-ellipsis-2 yt-uix-sessionlink spf-link'})
-
     find = str(id.get('href')).split("/")
-
     return find
 
-
-
-
 if __name__ == "__main__":
-    m = matchingUser('장삐쭈')
+    m = matchingUser('노마드 코더')
     ratings_expand = relContents(m[1],m[2])
     # 인기 컨텐츠
     print(ratings_expand)
@@ -153,5 +143,4 @@ if __name__ == "__main__":
     # 검색어추이
     print(search(ratings_expand[0]))
     GoogleTop = dict
-
     # print()

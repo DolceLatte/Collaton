@@ -14,8 +14,6 @@ def relChannel(channel,user):
     result = json.loads(s)
     return result["items"][0]['brandingSettings'],rContents
 
-
-
 if __name__ == "__main__":
     m = Recommand_Contents.matchingUser('보겸')
     ratings_expand =  Recommand_Contents.relContents(m[1], m[2])

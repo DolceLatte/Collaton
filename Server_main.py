@@ -15,7 +15,7 @@ def Getcontents_my_channel(name):
    #ID & Channel ID를 통해서 채널정보를 얻어옵니다.
    #채널이 가지고 있는 카테고리를 반환받습니다. ratings_expand(채널의 카테고리)
    ratings_expand = R.relContents(m[1], m[2])
-   return ratings_expand
+   return str(ratings_expand)
 
 @app.route('/GetTrends/<name>')
 @cross_origin()
@@ -29,7 +29,7 @@ def GetTrends(name):
 
    #채널카테고리를 기반으로 구글 검색어 추이를 분석합니다.
    result = R.GoogleTrend.GoogleTrendConstruct(ratings_expand)
-   return result
+   return str(result)
 
 @app.route('/searchGragh/<name>')
 @cross_origin()
@@ -44,7 +44,7 @@ def searchGragh(name):
    #채널 카테고리를 기반으로 네이버 검색 추이를 분석합니다.
    print(R.search(ratings_expand[0]))
 
-   return R.search(ratings_expand[0])
+   return str(R.search(ratings_expand[0]))
 
 @app.route('/Compare_with_youtuber/<name>')
 @cross_origin()

@@ -4,6 +4,7 @@ import CompareChannel as C
 import Recommand_Contents as R
 import GetHowOftenUploadVideo as G
 import Funtion2 as F
+import Function3 as F3
 from flask_cors import CORS, cross_origin
 
 now = datetime.datetime.now()
@@ -11,6 +12,8 @@ import json
 
 app = Flask(__name__)
 CORS(app)
+
+
 
 #function 1
 @app.route('/function_one/<name>')
@@ -46,8 +49,11 @@ def function2_1(name):
    videoID = []
    count = 0
    while count < 20:
-      videoID.append(m['items'][count]['id']['videoId'])
-      count = count + 1
+      try:
+         videoID.append(m['items'][count]['id']['videoId'])
+         count = count + 1
+      except:
+         count = count + 1
    list = F.checkViewCount(videoID)
    view = list[0]
    avg = sum(view, 0.0) / len(view)
@@ -70,8 +76,11 @@ def function2_2(name):
    videoID = []
    count = 0
    while count < 20:
-      videoID.append(m['items'][count]['id']['videoId'])
-      count = count + 1
+      try:
+         videoID.append(m['items'][count]['id']['videoId'])
+         count = count + 1
+      except:
+         count = count + 1
    list = F.checkViewCount(videoID)
    like = list[1]
    avg = sum(like, 0.0) / len(like)
@@ -85,7 +94,44 @@ def function2_2(name):
    else:
       return "a"
 
+#function 3
+@app.route('/function_three/<name>')
+@cross_origin()
+def function3(name):
+   m = F3.getVideoId(name)
+   m = json.loads(m)
+   videoID = []
+   count = 0
+   while count < 20:
+      try:
+         videoID.append(m['items'][count]['id']['videoId'])
+         count = count + 1
+      except:
+         count = count + 1
 
+   list = F3.checkViewCount(videoID)
+   max = max(list)
+   maxVideoIndex = list.index(max)
+   v1 = videoID.pop(maxVideoIndex)
+   min = min(list)
+   minVideoIndex = list.index(min)
+   v2 = videoID.pop(minVideoIndex)
+   goodVideo = F3.videoData(v1)
+   badVideo = F3.videoData(v2)
+   gv = json.loads(goodVideo)
+   bv = json.loads(badVideo)
+
+   goodTitle = gv['items'][0]['snippet']['title']
+   # 썸네일
+   goodURL = gv['items'][0]['snippet']['thumbnails']['default']['url']
+
+   badTitle = bv['items'][0]['snippet']['title']
+   # 썸네일
+   badURL = bv['items'][0]['snippet']['thumbnails']['default']['url']
+
+   s = str(goodTitle) + str(goodURL) + str(badTitle) + str(badURL)
+
+   return s
 
 #function 4
 @app.route('/function_four/<name>')

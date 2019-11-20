@@ -44,14 +44,17 @@ def checkViewCount(list=[]):
 
 
 if __name__ == "__main__":
-    m = getVideoId("슈기")
+    m = getVideoId("김진짜")
     m = json.loads(m)
     videoID = []
     count = 0
     while count < 20:
-        videoID.append(m['items'][count]['id']['videoId'])
-        print(m['items'][count]['id']['videoId'])
-        count = count + 1
+        try:
+            videoID.append(m['items'][count]['id']['videoId'])
+            print(m['items'][count]['id']['videoId'])
+            count = count + 1
+        except:
+            count = count + 1
     list = checkViewCount(videoID)
     like = list[1]
     avg = sum(like, 0.0) / len(like)

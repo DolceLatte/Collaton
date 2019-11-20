@@ -1,12 +1,11 @@
 import datetime
-
 from flask import Flask
 import CompareChannel as C
 import Recommand_Contents as R
 import GetHowOftenUploadVideo as G
 import Funtion2 as F
-
 from flask_cors import CORS, cross_origin
+
 now = datetime.datetime.now()
 import json
 
@@ -31,17 +30,18 @@ def YourGrade(name):
    max = avg * 1.2
    month = time.pop()
    if month < min:
-      return "Bad"
+      return "c"
    elif min < month < max :
-      return "Soso"
+      return "b"
    else:
-      return "Good"
+      return "a"
+
 
 #function 2
-@app.route('/function_two/<name>')
+@app.route('/function_two_1/<name>')
 @cross_origin()
-def function2(name):
-   m = F.getVideoId("보겸TV")
+def function2_1(name):
+   m = F.getVideoId(name)
    m = json.loads(m)
    videoID = []
    count = 0
@@ -50,20 +50,52 @@ def function2(name):
       count = count + 1
    list = F.checkViewCount(videoID)
    view = list[0]
+   avg = sum(view, 0.0) / len(view)
+   min = avg * 0.8
+   max = avg * 1.2
+   month = view.pop() + view.pop() + view.pop() /3
+   if month < min:
+      return "c"
+   elif min < month < max:
+      return "b"
+   else:
+      return "a"
+
+#function 2
+@app.route('/function_two_2/<name>')
+@cross_origin()
+def function2_2(name):
+   m = F.getVideoId(name)
+   m = json.loads(m)
+   videoID = []
+   count = 0
+   while count < 20:
+      videoID.append(m['items'][count]['id']['videoId'])
+      count = count + 1
+   list = F.checkViewCount(videoID)
    like = list[1]
+   avg = sum(like, 0.0) / len(like)
+   min = avg * 0.8
+   max = avg * 1.2
+   month = like.pop() + like.pop() + like.pop() /3
+   if month < min:
+      return "c"
+   elif min < month < max:
+      return "b"
+   else:
+      return "a"
+
 
 
 #function 4
-@app.route('/GetTrends/<name>')
+@app.route('/function_four/<name>')
 @cross_origin()
 def GetTrends(name):
    #입력받은 유튜버의 ID && Channel ID를 받아옵니다.
    m = R.matchingUser(name)
-
    #ID & Channel ID를 통해서 채널정보를 얻어옵니다.
    #채널이 가지고 있는 카테고리를 반환받습니다. ratings_expand(채널의 카테고리)
    ratings_expand = R.relContents(m[1], m[2])
-
    #채널카테고리를 기반으로 구글 검색어 추이를 분석합니다.
    result = R.GoogleTrend.GoogleTrendConstruct(ratings_expand)
    return str(result)
@@ -74,7 +106,6 @@ def GetTrends(name):
 def Getcontents_my_channel(name):
    #입력받은 유튜버의 ID && Channel ID를 받아옵니다.
    m = R.matchingUser(name)
-
    #ID & Channel ID를 통해서 채널정보를 얻어옵니다.
    #채널이 가지고 있는 카테고리를 반환받습니다. ratings_expand(채널의 카테고리)
    ratings_expand = R.relContents(m[1], m[2])
@@ -86,11 +117,9 @@ def Getcontents_my_channel(name):
 def searchGragh(name):
    #입력받은 유튜버의 ID && Channel ID를 받아옵니다.
    m = R.matchingUser(name)
-
    #ID & Channel ID를 통해서 채널정보를 얻어옵니다.
    #채널이 가지고 있는 카테고리를 반환받습니다. ratings_expand(채널의 카테고리)
    ratings_expand = R.relContents(m[1], m[2])
-
    #채널 카테고리를 기반으로 네이버 검색 추이를 분석합니다.
    print(R.search(ratings_expand[0]))
 
@@ -102,10 +131,8 @@ def Compare_with_youtuber(name):
    m = R.matchingUser(name)
    # 입력채널의 카테고리
    ratings_expand = R.relContents(m[1], m[2])
-
    # 비교채널 관련 컨텐츠
    c = C.relChannel(m[1], m[2])
-
    #관련채널 카테고리 비교
    recommandC = c[1]
    print(c[0])
@@ -115,22 +142,16 @@ def Compare_with_youtuber(name):
    # 반환결과 정리
    return str(recommandC)
 
-
 @app.route('/Recommand_Contents/<name>')
 @cross_origin()
 def Recommand_Contents(name):
    m = R.matchingUser(name)
    # 입력채널의 카테고리
    ratings_expand = R.relContents(m[1], m[2])
-
    # 비교채널 관련 컨텐츠
    c = C.relChannel(m[1], m[2])
-
    #관련채널 카테고리에서 나의 카테고리를 제외한 결과
    return str(c[0])
-
-
-
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port="8080")

@@ -38,18 +38,29 @@ def checkViewCount(list=[]):
             r = json.loads(r)
             view = r["items"][0]["statistics"]["viewCount"]
             like = int(r["items"][0]["statistics"]["likeCount"]) - int(r["items"][0]["statistics"]["dislikeCount"])
-            viewCount.append(view)
-            Like.append(like)
-            return Like , viewCount
+            viewCount.append(int(view))
+            Like.append(int(like))
+    return Like, viewCount
 
 
 if __name__ == "__main__":
-    m = getVideoId("보겸TV")
+    m = getVideoId("슈기")
     m = json.loads(m)
     videoID = []
     count = 0
     while count < 20:
         videoID.append(m['items'][count]['id']['videoId'])
+        print(m['items'][count]['id']['videoId'])
         count = count + 1
-
-    checkViewCount(videoID)
+    list = checkViewCount(videoID)
+    like = list[1]
+    avg = sum(like, 0.0) / len(like)
+    min = avg * 0.8
+    max = avg * 1.2
+    month = like.pop()
+    if month < min:
+        print("c")
+    elif min < month < max:
+        print("b")
+    else:
+        print("a")

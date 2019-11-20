@@ -1,22 +1,59 @@
+import datetime
+
 from flask import Flask
 import CompareChannel as C
 import Recommand_Contents as R
+import GetHowOftenUploadVideo as G
+import Funtion2 as F
+
 from flask_cors import CORS, cross_origin
+now = datetime.datetime.now()
+import json
 
 app = Flask(__name__)
 CORS(app)
 
-@app.route('/Getcontents_my_channel/<name>')
+#function 1
+@app.route('/function_one/<name>')
 @cross_origin()
-def Getcontents_my_channel(name):
-   #입력받은 유튜버의 ID && Channel ID를 받아옵니다.
-   m = R.matchingUser(name)
+def YourGrade(name):
+   count = 2;
+   # 월별 동영상 업로드 수를 저장한 배열
+   time = []
+   # 2월부터 11월까지의 비디오 업로드 수
+   while count <= now.month:
+      V = G.GetHowOftenUploadVideo(name, count)
+      v = json.loads(V)
+      time.append(v["pageInfo"]["totalResults"])
+      count = count + 1;
+   avg = sum(time,0.0) / len(time)
+   min = avg * 0.8
+   max = avg * 1.2
+   month = time.pop()
+   if month < min:
+      return "Bad"
+   elif min < month < max :
+      return "Soso"
+   else:
+      return "Good"
 
-   #ID & Channel ID를 통해서 채널정보를 얻어옵니다.
-   #채널이 가지고 있는 카테고리를 반환받습니다. ratings_expand(채널의 카테고리)
-   ratings_expand = R.relContents(m[1], m[2])
-   return str(ratings_expand)
+#function 2
+@app.route('/function_two/<name>')
+@cross_origin()
+def function2(name):
+   m = F.getVideoId("보겸TV")
+   m = json.loads(m)
+   videoID = []
+   count = 0
+   while count < 20:
+      videoID.append(m['items'][count]['id']['videoId'])
+      count = count + 1
+   list = F.checkViewCount(videoID)
+   view = list[0]
+   like = list[1]
 
+
+#function 4
 @app.route('/GetTrends/<name>')
 @cross_origin()
 def GetTrends(name):
@@ -30,6 +67,19 @@ def GetTrends(name):
    #채널카테고리를 기반으로 구글 검색어 추이를 분석합니다.
    result = R.GoogleTrend.GoogleTrendConstruct(ratings_expand)
    return str(result)
+
+
+@app.route('/Getcontents_my_channel/<name>')
+@cross_origin()
+def Getcontents_my_channel(name):
+   #입력받은 유튜버의 ID && Channel ID를 받아옵니다.
+   m = R.matchingUser(name)
+
+   #ID & Channel ID를 통해서 채널정보를 얻어옵니다.
+   #채널이 가지고 있는 카테고리를 반환받습니다. ratings_expand(채널의 카테고리)
+   ratings_expand = R.relContents(m[1], m[2])
+   return str(ratings_expand)
+
 
 @app.route('/searchGragh/<name>')
 @cross_origin()
@@ -78,6 +128,7 @@ def Recommand_Contents(name):
 
    #관련채널 카테고리에서 나의 카테고리를 제외한 결과
    return str(c[0])
+
 
 
 

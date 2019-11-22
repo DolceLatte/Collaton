@@ -209,5 +209,15 @@ def count(name):
     data = data['items'][0]['statistics']['subscriberCount']
     return str(data)
 
+@app.route('/')
+@cross_origin()
+def HelloWorld():
+    return "HEllO"
+
+@app.route('/hello')
+@cross_origin()
+def HelloWorld2():
+    return "HEllO2"
+
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port="8080")

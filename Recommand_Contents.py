@@ -133,7 +133,7 @@ def matchingUser(title):
     return find
 
 if __name__ == "__main__":
-    m = matchingUser('슈기')
+    m = matchingUser('보겸TV')
     ratings_expand = relContents(m[1],m[2])
     # 인기 컨텐츠
     print(ratings_expand)

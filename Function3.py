@@ -14,7 +14,7 @@ def getVideoId(name):
         channelId = channelId["items"][0]["id"]
     else:
         channelId = m[2]
-    url = "https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=" + channelId + "&maxResults=20&key=AIzaSyA8bOeq4rtIj5qI6qkf2FRrMUpw0IoGoSk"
+    url = "https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=" + channelId + "&maxResults=20&key=AIzaSyBj8NBU1JyOJDWwzURy9T0LJkOCX3nFqV8"
     request = urllib.request.Request(url)
     response = urllib.request.urlopen(request)
     rescode = response.getcode()
@@ -23,7 +23,7 @@ def getVideoId(name):
         return response_body.decode('utf-8')
 
 def videoData(id):
-    url = "https://www.googleapis.com/youtube/v3/videos?part=snippet&id=" + id + "&key=AIzaSyA8bOeq4rtIj5qI6qkf2FRrMUpw0IoGoSk"
+    url = "https://www.googleapis.com/youtube/v3/videos?part=snippet&id=" + id + "&key=AIzaSyBj8NBU1JyOJDWwzURy9T0LJkOCX3nFqV8"
     request = urllib.request.Request(url)
     response = urllib.request.urlopen(request)
     rescode = response.getcode()
@@ -34,7 +34,7 @@ def videoData(id):
 def checkViewCount(list=[]):
     viewCount = []
     for l in list:
-        url = "https://www.googleapis.com/youtube/v3/videos?part=statistics&id=" + l + "&maxResults=20&key=AIzaSyA8bOeq4rtIj5qI6qkf2FRrMUpw0IoGoSk"
+        url = "https://www.googleapis.com/youtube/v3/videos?part=statistics&id=" + l + "&maxResults=20&key=AIzaSyBj8NBU1JyOJDWwzURy9T0LJkOCX3nFqV8"
         request = urllib.request.Request(url)
         response = urllib.request.urlopen(request)
         rescode = response.getcode()
@@ -48,7 +48,7 @@ def checkViewCount(list=[]):
 
 
 if __name__ == "__main__":
-    m = getVideoId("보겸TV")
+    m = getVideoId("쯔양")
     m = json.loads(m)
     videoID = []
     count = 0
@@ -70,8 +70,11 @@ if __name__ == "__main__":
     badVideo = videoData(v2)
     gv = json.loads(goodVideo)
     bv = json.loads(badVideo)
-    print(gv)
     #제목
     print(gv['items'][0]['snippet']['title'])
     #썸네일
     print(gv['items'][0]['snippet']['thumbnails']['default']['url'])
+    # 제목
+    print(bv['items'][0]['snippet']['title'])
+    # 썸네일
+    print(bv['items'][0]['snippet']['thumbnails']['default']['url'])

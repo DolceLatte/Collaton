@@ -2,7 +2,7 @@ import urllib.request
 import json
 
 def getCategory(user):
-    url = "https://www.googleapis.com/youtube/v3/channels?part=contentDetails,brandingSettings,topicDetails&forUsername="+user+"&key=AIzaSyA8bOeq4rtIj5qI6qkf2FRrMUpw0IoGoSk"
+    url = "https://www.googleapis.com/youtube/v3/channels?part=contentDetails,brandingSettings,topicDetails&forUsername="+user+"&key=AIzaSyBj8NBU1JyOJDWwzURy9T0LJkOCX3nFqV8"
     request = urllib.request.Request(url)
     response = urllib.request.urlopen(request)
     rescode = response.getcode()
@@ -11,7 +11,7 @@ def getCategory(user):
         return response_body.decode('utf-8')
 
 def getCategory_id(id):
-    url = "https://www.googleapis.com/youtube/v3/channels?part=contentDetails,brandingSettings,topicDetails&id="+id+"&key=AIzaSyA8bOeq4rtIj5qI6qkf2FRrMUpw0IoGoSk"
+    url = "https://www.googleapis.com/youtube/v3/channels?part=contentDetails,brandingSettings,topicDetails&id="+id+"&key=AIzaSyBj8NBU1JyOJDWwzURy9T0LJkOCX3nFqV8"
     request = urllib.request.Request(url)
     response = urllib.request.urlopen(request)
     rescode = response.getcode()
@@ -20,7 +20,7 @@ def getCategory_id(id):
         return response_body.decode('utf-8')
 
 def getbrandingSettings(r):
-        url = "https://www.googleapis.com/youtube/v3/channels?part=brandingSettings&id="+r+"&key=AIzaSyA8bOeq4rtIj5qI6qkf2FRrMUpw0IoGoSk"
+        url = "https://www.googleapis.com/youtube/v3/channels?part=brandingSettings&id="+r+"&key=AIzaSyBj8NBU1JyOJDWwzURy9T0LJkOCX3nFqV8"
         request = urllib.request.Request(url)
         response = urllib.request.urlopen(request)
         rescode = response.getcode()

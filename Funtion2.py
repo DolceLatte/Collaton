@@ -15,7 +15,7 @@ def getVideoId(name):
         channelId = channelId["items"][0]["id"]
     else:
         channelId = m[2]
-    url = "https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=" + channelId + "&maxResults=20&key=AIzaSyA8bOeq4rtIj5qI6qkf2FRrMUpw0IoGoSk"
+    url = "https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=" + channelId + "&maxResults=20&key=AIzaSyBj8NBU1JyOJDWwzURy9T0LJkOCX3nFqV8"
     request = urllib.request.Request(url)
     response = urllib.request.urlopen(request)
     rescode = response.getcode()
@@ -28,7 +28,7 @@ def checkViewCount(list=[]):
     viewCount = []
     Like = []
     for l in list:
-        url = "https://www.googleapis.com/youtube/v3/videos?part=statistics&id=" + l + "&maxResults=20&key=AIzaSyA8bOeq4rtIj5qI6qkf2FRrMUpw0IoGoSk"
+        url = "https://www.googleapis.com/youtube/v3/videos?part=statistics&id=" + l + "&maxResults=20&key=AIzaSyBj8NBU1JyOJDWwzURy9T0LJkOCX3nFqV8"
         request = urllib.request.Request(url)
         response = urllib.request.urlopen(request)
         rescode = response.getcode()
@@ -44,7 +44,7 @@ def checkViewCount(list=[]):
 
 
 if __name__ == "__main__":
-    m = getVideoId("김진짜")
+    m = getVideoId("보겸TV")
     m = json.loads(m)
     videoID = []
     count = 0
@@ -56,6 +56,7 @@ if __name__ == "__main__":
         except:
             count = count + 1
     list = checkViewCount(videoID)
+    print(list)
     like = list[1]
     avg = sum(like, 0.0) / len(like)
     min = avg * 0.8

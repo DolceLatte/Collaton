@@ -6,7 +6,7 @@ from Recommand_Contents import matchingUser
 
 
 def getCount(user):
-    url = "https://www.googleapis.com/youtube/v3/channels?part=statistics&forUsername="+user+"&key=AIzaSyA8bOeq4rtIj5qI6qkf2FRrMUpw0IoGoSk"
+    url = "https://www.googleapis.com/youtube/v3/channels?part=statistics&forUsername="+user+"&key=AIzaSyBj8NBU1JyOJDWwzURy9T0LJkOCX3nFqV8"
     request = urllib.request.Request(url)
     response = urllib.request.urlopen(request)
     rescode = response.getcode()
@@ -15,7 +15,7 @@ def getCount(user):
         return response_body.decode('utf-8')
 
 def getCount_id(id):
-    url = "https://www.googleapis.com/youtube/v3/channels?part=statistics&id="+id+"&key=AIzaSyA8bOeq4rtIj5qI6qkf2FRrMUpw0IoGoSk"
+    url = "https://www.googleapis.com/youtube/v3/channels?part=statistics&id="+id+"&key=AIzaSyBj8NBU1JyOJDWwzURy9T0LJkOCX3nFqV8"
     request = urllib.request.Request(url)
     response = urllib.request.urlopen(request)
     rescode = response.getcode()

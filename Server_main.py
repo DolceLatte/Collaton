@@ -107,11 +107,11 @@ def function3(name):
         except:
             count = count + 1
     list = F3.checkViewCount(videoID)
-    max = max(list)
-    maxVideoIndex = list.index(max)
+    _max = max(list)
+    maxVideoIndex = list.index(_max)
     v1 = videoID.pop(maxVideoIndex)
-    min = min(list)
-    minVideoIndex = list.index(min)
+    _min = min(list)
+    minVideoIndex = list.index(_min)
     v2 = videoID.pop(minVideoIndex)
     goodVideo = F3.videoData(v1)
     badVideo = F3.videoData(v2)
@@ -143,7 +143,6 @@ def GetTrends(name):
     result = R.GoogleTrend.GoogleTrendConstruct(ratings_expand)
     return str(result)
 
-
 @app.route('/Getcontents_my_channel/<name>')
 @cross_origin()
 def Getcontents_my_channel(name):
@@ -153,7 +152,6 @@ def Getcontents_my_channel(name):
     #채널이 가지고 있는 카테고리를 반환받습니다. ratings_expand(채널의 카테고리)
     ratings_expand = R.relContents(m[1], m[2])
     return str(ratings_expand)
-
 
 @app.route('/searchGragh/<name>')
 @cross_origin()
